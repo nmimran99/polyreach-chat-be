@@ -1,15 +1,9 @@
 import Message from "../models/message.model.js";
 import { addConversationMessage } from "./conversation.service.js";
+import Conversation from "../models/conversation.model.js";
 
-export const createMessage = async ({
-	tenant,
-	text,
-	from,
-	to,
-	conversation,
-}) => {
+export const createMessage = async ({ text, from, to, conversation }) => {
 	const message = new Message({
-		tenant,
 		data: {
 			text,
 			files: [],
@@ -17,16 +11,12 @@ export const createMessage = async ({
 		read: false,
 		from,
 		to,
-		conversation,
+		conversation: conversation._id,
 	});
 
 	try {
 		const saved = await message.save();
-		await addConversationMessage({
-			conversationId: conversation,
-			messageId: saved._id,
-		});
-		return saved;
+		return { message: saved.toObject(), conversation };
 	} catch (e) {
 		console.log(e.message);
 		return e;

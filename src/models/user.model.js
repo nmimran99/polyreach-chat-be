@@ -32,7 +32,8 @@ const userSchema = new Schema(
 			changePasswordOnFirstLogin: { type: Boolean, default: false },
 			isVerified: Boolean,
 		},
-		socketId: String,
+		videoSocket: { type: String, default: null },
+		messageSocket: { type: String, default: null },
 	},
 	{
 		timestamps: true,
